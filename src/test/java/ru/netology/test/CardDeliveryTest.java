@@ -127,4 +127,78 @@ public class CardDeliveryTest {
         success.$x(".//button").click();
         success.should(hidden);
     }
+
+    @Test
+    public void shouldSadPathReplan() {
+        UserInfo user = generateUser("ru", 5);
+        form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
+        form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").val(user.getDate());
+        form.$x(".//span[@data-test-id='name']//child::input").val(user.getName());
+        form.$x(".//span[@data-test-id='phone']//child::input").val(user.getPhone());
+        form.$x(".//label[@data-test-id='agreement']").click();
+        form.$x(".//button//ancestor::span[contains(text(), 'Запланировать')]").click();
+
+        success.should(visible, ofSeconds(15));
+        success.$x(".//div[@class='notification__content']").should(text("Встреча успешно запланирована на " +
+                user.getDate()));
+        success.$x(".//button").click();
+        success.should(hidden);
+
+        form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").
+                val(generateDate(2));
+        form.$x(".//button//ancestor::span[contains(text(), 'Запланировать')]").click();
+
+        form.$x(".//span[@data-test-id='date']//child::span[@class='input__sub']").
+                should(visible, text("Заказ на выбранную дату невозможен"));
+    }
+
+    @Test
+    public void shouldEmptyCityTest() {
+        UserInfo user = generateUser("ru", 5);
+        form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").val(user.getDate());
+        form.$x(".//span[@data-test-id='name']//child::input").val(user.getName());
+        form.$x(".//span[@data-test-id='phone']//child::input").val(user.getPhone());
+        form.$x(".//label[@data-test-id='agreement']").click();
+        form.$x(".//button//ancestor::span[contains(text(), 'Запланировать')]").click();
+        form.$x(".//span[@data-test-id='city']").should(cssClass("input_invalid"));
+        form.$x(".//span[@data-test-id='city']//child::span[@class='input__sub']").
+                should(visible, text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    public void shouldEmptyNameTest() {
+        UserInfo user = generateUser("ru", 5);
+        form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
+        form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").val(user.getDate());
+        form.$x(".//span[@data-test-id='phone']//child::input").val(user.getPhone());
+        form.$x(".//label[@data-test-id='agreement']").click();
+        form.$x(".//button//ancestor::span[contains(text(), 'Запланировать')]").click();
+        form.$x(".//span[@data-test-id='name']").should(cssClass("input_invalid"));
+        form.$x(".//span[@data-test-id='name']//child::span[@class='input__sub']").
+                should(visible, text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    public void shouldEmptyPhoneTest() {
+        UserInfo user = generateUser("ru", 5);
+        form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
+        form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").val(user.getDate());
+        form.$x(".//span[@data-test-id='name']//child::input").val(user.getName());
+        form.$x(".//label[@data-test-id='agreement']").click();
+        form.$x(".//button//ancestor::span[contains(text(), 'Запланировать')]").click();
+        form.$x(".//span[@data-test-id='phone']").should(cssClass("input_invalid"));
+        form.$x(".//span[@data-test-id='phone']//child::span[@class='input__sub']").
+                should(visible, text("Поле обязательно для заполнения"));
+    }
+
+    @Test
+    public void shouldEmptyCheckboxTest() {
+        UserInfo user = generateUser("ru", 5);
+        form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
+        form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").val(user.getDate());
+        form.$x(".//span[@data-test-id='name']//child::input").val(user.getName());
+        form.$x(".//span[@data-test-id='phone']//child::input").val(user.getPhone());
+        form.$x(".//button//ancestor::span[contains(text(), 'Запланировать')]").click();
+        form.$x(".//label[@data-test-id='agreement']").should(cssClass("input_invalid"));
+    }
 }
