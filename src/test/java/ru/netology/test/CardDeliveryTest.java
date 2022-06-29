@@ -1,6 +1,10 @@
 package ru.netology.test;
 
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Link;
+import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.netology.data.UserInfo;
@@ -12,18 +16,21 @@ import static java.time.Duration.ofSeconds;
 import static ru.netology.generator.DataGenerator.generateDate;
 import static ru.netology.generator.DataGenerator.generateUser;
 
+
 public class CardDeliveryTest {
     SelenideElement form = $x("//form");
     SelenideElement success = $x("//div[@data-test-id='success-notification']");
     SelenideElement replan = $x("//div[@data-test-id='replan-notification']");
     SelenideElement error = $x("//div[@data-test-id='error-notification']");
 
-    @BeforeMethod
+    @BeforeMethod(description = "Открытие страницы перед каждым тестом")
     public void setup() {
         open("http://localhost:9999/");
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "Без перепланирования даты встречи")
+    @Test(description = "Тест критического пути")
     public void shouldHappyPath() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -40,7 +47,9 @@ public class CardDeliveryTest {
         success.should(hidden);
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "С перепланированием даты встречи")
+    @Test(description = "Тест перепланирования встречи на день раньше")
     public void shouldHappyPathReplanOne() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -70,7 +79,9 @@ public class CardDeliveryTest {
         success.should(hidden);
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "С перепланированием даты встречи")
+    @Test(description = "Тест перепланирования встречи на тот же день")
     public void shouldHappyPathReplanTwo() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -98,7 +109,9 @@ public class CardDeliveryTest {
         success.should(hidden);
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "С перепланированием даты встречи")
+    @Test(description = "Тест перепланирования встречи на день позже")
     public void shouldHappyPathReplanThree() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -128,7 +141,9 @@ public class CardDeliveryTest {
         success.should(hidden);
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "С перепланированием даты встречи")
+    @Test(description = "Тест перепланирования встречи на невалидную дату")
     public void shouldSadPathReplan() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -152,7 +167,9 @@ public class CardDeliveryTest {
                 should(visible, text("Заказ на выбранную дату невозможен"));
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "Без перепланирования даты встречи")
+    @Test(description = "Тест с пустым полем город")
     public void shouldEmptyCityTest() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='date']//child::input[@class='input__control']").val(user.getDate());
@@ -165,7 +182,9 @@ public class CardDeliveryTest {
                 should(visible, text("Поле обязательно для заполнения"));
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "Без перепланирования даты встречи")
+    @Test(description = "Тест с пустым полем имя и фамилия")
     public void shouldEmptyNameTest() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -178,7 +197,9 @@ public class CardDeliveryTest {
                 should(visible, text("Поле обязательно для заполнения"));
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "Без перепланирования даты встречи")
+    @Test(description = "Тест с пустым полем телефон")
     public void shouldEmptyPhoneTest() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());
@@ -191,7 +212,9 @@ public class CardDeliveryTest {
                 should(visible, text("Поле обязательно для заполнения"));
     }
 
-    @Test
+    @Epic(value = "Форма заказа доставки карты")
+    @Feature(value = "Без перепланирования даты встречи")
+    @Test(description = "Тест с не прожатым чекбоксом")
     public void shouldEmptyCheckboxTest() {
         UserInfo user = generateUser("ru", 5);
         form.$x(".//span[@data-test-id='city']//child::input").val(user.getCity());

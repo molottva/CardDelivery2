@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id "io.freefair.lombok" version "6.5.0-rc1"
+    id 'io.qameta.allure' version '2.9.6'
 }
 
 group 'ru.netology'
@@ -8,6 +9,13 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 11
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
+
+allure {
+    version = '2.16.1'
+    useTestNG {
+        version = '2.16.1'
+    }
+}
 
 repositories {
     mavenCentral()
