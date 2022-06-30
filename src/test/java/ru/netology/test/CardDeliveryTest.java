@@ -1,10 +1,12 @@
 package ru.netology.test;
 
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
-import io.qameta.allure.Link;
-import io.qameta.allure.Story;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.netology.data.UserInfo;
@@ -23,9 +25,20 @@ public class CardDeliveryTest {
     SelenideElement replan = $x("//div[@data-test-id='replan-notification']");
     SelenideElement error = $x("//div[@data-test-id='error-notification']");
 
+    @BeforeClass(description = "Включение логгера перед тестами")
+    public void setUpClass() {
+        SelenideLogger.addListener("allure", new AllureSelenide().
+                screenshots(true).savePageSource(true));
+    }
+
     @BeforeMethod(description = "Открытие страницы перед каждым тестом")
-    public void setup() {
+    public void setUpMethod() {
         open("http://localhost:9999/");
+    }
+
+    @AfterClass(description = "Отключение логгера после тестов")
+    public void setDownClass() {
+        SelenideLogger.removeListener("allure");
     }
 
     @Epic(value = "Форма заказа доставки карты")

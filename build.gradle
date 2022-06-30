@@ -24,6 +24,7 @@ repositories {
 dependencies {
     testImplementation group: 'org.testng', name: 'testng', version: '7.6.0'
     implementation group: 'com.codeborne', name: 'selenide', version: '6.5.2'
+    implementation 'io.qameta.allure:allure-selenide:2.16.1'
     implementation group: 'com.github.javafaker', name: 'javafaker', version: '1.0.2'
 }
 
